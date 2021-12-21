@@ -4,7 +4,6 @@ import Modal from 'react-bootstrap/Modal'
 import MaterialTable from "material-table";
 import axios from "axios";
 
-import InquiryPopup from "./component/InquiryModal";
 
 export default function MaterialTableDemo() {
   // const [state, setState] = React.useState({
