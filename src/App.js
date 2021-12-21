@@ -13,8 +13,6 @@ function App() {
   const [user, setUser] = useState(null);
   const authenticated = user != null;
 
-  const login = ({ email, password }) => setUser({ "ID" : "user", "PWD" : "TEST" });
-
   return (
     <div style={{ padding: '30px' }}>
     <BrowserRouter>
