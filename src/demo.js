@@ -3,6 +3,10 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal'
 import MaterialTable from "material-table";
 import axios from "axios";
+import InquiryDetailModal from "./component/InquiryDetail"
+import selecttedModal from "./context/SelectedModal"
+
+const ThemeContext = React.createContext(0);
 
 
 export default function MaterialTableDemo() {
@@ -31,9 +35,10 @@ export default function MaterialTableDemo() {
   // modal start
 
   const [show, setShow] = React.useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [selectedRowNumber, setSelectedRowNumber] = React.useState(0);
  
   // modal end
 
@@ -44,7 +49,7 @@ export default function MaterialTableDemo() {
   }, []);
 
   return (
-    <>
+    <selecttedModal.Provider value={show}>
       <MaterialTable
         title="문의 리스트"
         columns={state.columns}
@@ -56,6 +61,15 @@ export default function MaterialTableDemo() {
             onClick: (event, rowData) => {
               // Do save operation
               console.log("onClick: 문의 자세히 보기");
+              console.log("Shit");
+              console.log(state.data);
+              console.log("Shit2");
+              console.log(typeof state.data);
+              console.log(typeof selectedRowNumber);
+
+              // InquiryDetailModal.handleShow();
+
+              setSelectedRowNumber(rowData.tableData.id)
               handleShow();
             },
           },
@@ -104,26 +118,9 @@ export default function MaterialTableDemo() {
         //   //   }),
         // }}
       />
-      <Modal
-        show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Modal title</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          I will not close if you click outside me. Don't even try to press
-          escape key.
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary">Understood</Button>
-        </Modal.Footer>
-      </Modal>
-    </>
+      <InquiryDetailModal inquiryList={state.data} selectedRowNumber={selectedRowNumber}></InquiryDetailModal>
+      {/* <InquiryDetailModal inquiry={state.data[selectedRowNumber]}></InquiryDetailModal> */}
+      
+    </selecttedModal.Provider>
   );
 }
