@@ -24,13 +24,16 @@ function App() {
         <Link to="/profile">
           <button>Profile</button>
         </Link>
+        <Link to="/signin">
+          <button>Signin</button>
+        </Link>
       </header>
       <hr />
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route
-            path="/login"
+            path="/signin"
             element={<SignIn />}
           />
           <Route
