@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
-import selecttedModal from "../context/SelectedModal"
+import ModalContext from "../context/SelectedModal"
 
 function InquiryDetailModal(props) {
   const [show, setShow] = React.useState(props.show);
@@ -10,7 +10,7 @@ function InquiryDetailModal(props) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const view = useContext(selecttedModal);
+  const view = useContext(ModalContext);
 
   console.log(props.inquiryList); 
   console.log(props.selectedRowNumber); 

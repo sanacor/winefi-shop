@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal'
 import MaterialTable from "material-table";
 import axios from "axios";
 import InquiryDetailModal from "./component/InquiryDetail"
-import selecttedModal from "./context/SelectedModal"
+import ModalContext from "./context/SelectedModal"
 
 const ThemeContext = React.createContext(0);
 
@@ -49,7 +49,7 @@ export default function MaterialTableDemo() {
   }, []);
 
   return (
-    <selecttedModal.Provider value={show}>
+    <ModalContext.Provider value={show}>
       <MaterialTable
         title="문의 리스트"
         columns={state.columns}
@@ -121,6 +121,6 @@ export default function MaterialTableDemo() {
       <InquiryDetailModal inquiryList={state.data} selectedRowNumber={selectedRowNumber}></InquiryDetailModal>
       {/* <InquiryDetailModal inquiry={state.data[selectedRowNumber]}></InquiryDetailModal> */}
       
-    </selecttedModal.Provider>
+    </ModalContext.Provider>
   );
 }
