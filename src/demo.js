@@ -9,11 +9,8 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-import ModalContext from "./context/SelectedModal";
-
 
 export default function MaterialTableDemo() {
-
   const [show, setShow] = React.useState(false);
   const value = { show, setShow };
 
@@ -35,7 +32,7 @@ export default function MaterialTableDemo() {
   async function farBoo() {
     console.log("farBoo 1");
     const result = await axios.post("http://demo3440516.mockable.io/reply", {
-      replyContent: selectedInquiry.inquiryContents
+      replyContent: selectedInquiry.inquiryContents,
     });
 
     console.log("farBoo 2");
@@ -43,12 +40,10 @@ export default function MaterialTableDemo() {
 
     const result2 = await axios.get("http://demo3440516.mockable.io/inquiry");
     setState(result2.data);
-
   }
 
-
   return (
-    <ModalContext.Provider value={value}>
+    <React.Fragment>
       <MaterialTable
         title="문의 리스트"
         columns={state.columns}
@@ -58,16 +53,6 @@ export default function MaterialTableDemo() {
             icon: "search",
             tooltip: "문의 자세히 보기",
             onClick: (event, rowData) => {
-              // Do save operation
-              console.log("onClick: 문의 자세히 보기");
-              console.log("Shit");
-              console.log(state.data);
-              console.log("Shit2");
-              console.log(typeof state.data);
-              console.log(typeof selectedRowNumber);
-
-              // InquiryDetailModal.handleShow();
-
               setSelectedRowNumber(rowData.tableData.id);
               setSelectedInquiry(rowData);
               handleShow();
@@ -98,7 +83,6 @@ export default function MaterialTableDemo() {
           <Modal.Title>{selectedInquiry.wineName}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {/* <SanaDetail inquiryContents={selectedInquiry.inquiryContents}></SanaDetail> */}
           <Form>
             <Form.Label>문의 내용</Form.Label>
             <Form.Control
@@ -133,6 +117,6 @@ export default function MaterialTableDemo() {
           </Button>
         </Modal.Footer>
       </Modal>
-    </ModalContext.Provider>
+    </React.Fragment>
   );
 }
