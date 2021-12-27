@@ -1,45 +1,29 @@
 import React from "react";
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal'
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 import MaterialTable from "material-table";
 import axios from "axios";
-import InquiryDetailModal from "./component/InquiryDetail"
-import ModalContext from "./context/SelectedModal"
 
-const ThemeContext = React.createContext(0);
+import Form from "react-bootstrap/Form";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+
+import ModalContext from "./context/SelectedModal";
 
 
 export default function MaterialTableDemo() {
-  // const [state, setState] = React.useState({
-  // columns: [
-  //   { title: 'Name', field: 'name' },
-  //   { title: 'Surname', field: 'surname' },
-  //   { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
-  //   {
-  //     title: 'Birth Place',
-  //     field: 'birthCity',
-  //     lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
-  //   },
-  // ],
-  // data: [
-  //   { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-  //   {
-  //     name: 'Zerya Betül',
-  //     surname: 'Baran',
-  //     birthYear: 2017,
-  //     birthCity: 34,
-  //   },
-  // ],
-  // });
-
-  // modal start
 
   const [show, setShow] = React.useState(false);
+  const value = { show, setShow };
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const [selectedRowNumber, setSelectedRowNumber] = React.useState(0);
- 
+
+  const [selectedInquiry, setSelectedInquiry] = React.useState({});
+
   // modal end
 
   const [state, setState] = React.useState({ hits: [] });
@@ -48,8 +32,23 @@ export default function MaterialTableDemo() {
     setState(result.data);
   }, []);
 
+  async function farBoo() {
+    console.log("farBoo 1");
+    const result = await axios.post("http://demo3440516.mockable.io/reply", {
+      replyContent: selectedInquiry.inquiryContents
+    });
+
+    console.log("farBoo 2");
+    handleClose();
+
+    const result2 = await axios.get("http://demo3440516.mockable.io/inquiry");
+    setState(result2.data);
+
+  }
+
+
   return (
-    <ModalContext.Provider value={show}>
+    <ModalContext.Provider value={value}>
       <MaterialTable
         title="문의 리스트"
         columns={state.columns}
@@ -69,7 +68,8 @@ export default function MaterialTableDemo() {
 
               // InquiryDetailModal.handleShow();
 
-              setSelectedRowNumber(rowData.tableData.id)
+              setSelectedRowNumber(rowData.tableData.id);
+              setSelectedInquiry(rowData);
               handleShow();
             },
           },
@@ -87,40 +87,52 @@ export default function MaterialTableDemo() {
             actions: "기능",
           },
         }}
-        // editable={{
-        //   // isEditable: rowData => rowData.name === 'replyContents', // only name(a) rows would be editable
-        //   onRowAdd: (newData) =>
-        //     new Promise((resolve) => {
-        //       setTimeout(() => {
-        //         resolve();
-        //         const data = [...state.data];
-        //         data.push(newData);
-        //         setState({ ...state, data });
-        //       }, 600);
-        //     }),
-        //   onRowUpdate: (newData, oldData) =>
-        //     new Promise((resolve) => {
-        //       setTimeout(() => {
-        //         resolve();
-        //         const data = [...state.data];
-        //         data[data.indexOf(oldData)] = newData;
-        //         setState({ ...state, data });
-        //       }, 600);
-        //     }),
-        //   // onRowDelete: oldData =>
-        //   //   new Promise(resolve => {
-        //   //     setTimeout(() => {
-        //   //       resolve();
-        //   //       const data = [...state.data];
-        //   //       data.splice(data.indexOf(oldData), 1);
-        //   //       setState({ ...state, data });
-        //   //     }, 600);
-        //   //   }),
-        // }}
       />
-      <InquiryDetailModal inquiryList={state.data} selectedRowNumber={selectedRowNumber}></InquiryDetailModal>
-      {/* <InquiryDetailModal inquiry={state.data[selectedRowNumber]}></InquiryDetailModal> */}
-      
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>{selectedInquiry.wineName}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {/* <SanaDetail inquiryContents={selectedInquiry.inquiryContents}></SanaDetail> */}
+          <Form>
+            <Form.Label>문의 내용</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder={selectedInquiry.inquiryContents}
+              readOnly
+            />
+            <Container className="mt-5">
+              <Row>
+                <Col></Col>
+              </Row>
+            </Container>
+            <Form.Group
+              className="mb-3"
+              controlId="exampleForm.ControlTextarea1"
+            >
+              <Form.Label>답변 작성</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={5}
+                placeholder="문의를 보낸 손님에게 답변을 해주세요:)"
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            닫기
+          </Button>
+          <Button variant="primary" onClick={farBoo}>
+            답변 보내기
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </ModalContext.Provider>
   );
 }

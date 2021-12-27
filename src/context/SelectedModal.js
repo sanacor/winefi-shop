@@ -1,5 +1,7 @@
 import { createContext } from "react";
 
-const ModalContext = createContext(false);
-
+const ModalContext = createContext({
+    view: false,
+    setView: () => {}
+  });
 export default ModalContext;
