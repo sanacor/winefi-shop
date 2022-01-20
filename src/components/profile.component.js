@@ -1,17 +1,20 @@
-import React, { Component } from "react";
+import React from "react";
 import { Redirect } from 'react-router-dom';
-import { connect } from "react-redux";
+import { useSelector } from "react-redux"
 
-class Profile extends Component {
+function Profile(props) {
+  const currentUser = useSelector((state) => {
+    console.log(state);
+    return state.loginSlice.user
+  });
 
-  render() {
-    const { user: currentUser } = this.props;
+  /*
+  if (!currentUser) {
+    return <Redirect to="/login" />;
+  }
+  */
 
-    if (!currentUser) {
-      return <Redirect to="/login" />;
-    }
-
-    return (
+  return (
       <div className="container">
         <header className="jumbotron">
           <h3>
@@ -35,14 +38,6 @@ class Profile extends Component {
         </ul>
       </div>
     );
-  }
 }
 
-function mapStateToProps(state) {
-  const { user } = state.auth;
-  return {
-    user,
-  };
-}
-
-export default connect(mapStateToProps)(Profile);
+export default Profile;

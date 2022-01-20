@@ -5,8 +5,9 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
-import { connect, useDispatch } from "react-redux";
-import { login } from "../actions/auth";
+import { useDispatch } from "react-redux";
+//import { login } from "../actions/auth";
+import { loginTry} from "../features/auth/loginSlice"
 
 const required = (value) => {
   if (!value) {
@@ -21,6 +22,7 @@ const required = (value) => {
 function Login(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [fcmToken, setFcmToken] = useState("");
   const [loading, setLoading] = useState(false);
   const { isLoggedIn, message } = props;
 
@@ -41,23 +43,17 @@ function Login(props) {
     e.preventDefault();
 
     setLoading(true);
-    //this.form.validateAll(); 구현필요
+    setFcmToken("Test");//TODO FCM 토큰을 받아와야 함
+    //this.form.validateAll(); //TODO 구현필요
 
-    const { history } = props;
-
-    //if (checkBtn.context._errors.length === 0) {
-      dispatch(login(username, password))
-        .then(() => {
-          history.push("/profile");
-          window.location.reload();
-        })
-        .catch(() => {
-          setLoading(false);
-        });
-    //}
-    //else {
-    //  setLoading(false);
-    //}
+    dispatch(loginTry({username, password, fcmToken}))
+      .then(() => {
+        window.history.replaceState('page2', 'Title', '/profile');
+        window.location.reload();
+      })
+      .catch(() => {
+        setLoading(false);
+      });
   }
 
   if (isLoggedIn) {
@@ -130,6 +126,7 @@ function Login(props) {
   );
 }
 
+/*
 function mapStateToProps(state) {
   const { isLoggedIn } = state.auth;
   const { message } = state.message;
@@ -138,5 +135,7 @@ function mapStateToProps(state) {
     message
   };
 }
+*/
 
-export default connect(mapStateToProps)(Login);
+//export default connect(mapStateToProps)(Login);
+export default Login;
