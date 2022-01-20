@@ -5,7 +5,7 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { login } from "../actions/auth";
 
 const required = (value) => {
@@ -27,6 +27,8 @@ function Login(props) {
   const checkBtn = useRef();
   const loginForm = useRef();
 
+  const dispatch = useDispatch();
+
   const onChangeUsername = e => {
     setUsername(e.target.value)
   };
@@ -41,7 +43,7 @@ function Login(props) {
     setLoading(true);
     //this.form.validateAll(); 구현필요
 
-    const { dispatch, history } = props;
+    const { history } = props;
 
     //if (checkBtn.context._errors.length === 0) {
       dispatch(login(username, password))
