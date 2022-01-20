@@ -1,12 +1,12 @@
 import React, { useState, useRef } from "react";
 import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router';
 
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
 import { useDispatch } from "react-redux";
-//import { login } from "../actions/auth";
 import { loginTry} from "../features/auth/loginSlice"
 
 const required = (value) => {
@@ -25,6 +25,7 @@ function Login(props) {
   const [fcmToken, setFcmToken] = useState("");
   const [loading, setLoading] = useState(false);
   const { isLoggedIn, message } = props;
+  const routerHistory = useHistory();
 
   const checkBtn = useRef();
   const loginForm = useRef();
@@ -48,8 +49,7 @@ function Login(props) {
 
     dispatch(loginTry({username, password, fcmToken}))
       .then(() => {
-        window.history.replaceState('page2', 'Title', '/profile');
-        window.location.reload();
+        routerHistory.push('/profile');
       })
       .catch(() => {
         setLoading(false);

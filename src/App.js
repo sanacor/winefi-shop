@@ -13,7 +13,7 @@ import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
 
-import { logout } from "./actions/auth";
+//import { logout } from "./actions/auth";
 import { clearMessage } from "./actions/message";
 
 import { history } from './helpers/history';
@@ -24,7 +24,7 @@ import EventBus from "./common/EventBus";
 class App extends Component {
   constructor(props) {
     super(props);
-    this.logOut = this.logOut.bind(this);
+    //this.logOut = this.logOut.bind(this);
 
     this.state = {
       showModeratorBoard: false,
@@ -53,10 +53,13 @@ class App extends Component {
     });
   }
 
+  /*
   componentWillUnmount() {
     EventBus.remove("logout");
   }
+  */
 
+  /*
   logOut() {
     this.props.dispatch(logout());
     this.setState({
@@ -65,6 +68,7 @@ class App extends Component {
       currentUser: undefined,
     });
   }
+  */
 
   render() {
     const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
@@ -116,7 +120,7 @@ class App extends Component {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <a href="/login" className="nav-link" onClick={this.logOut}>
+                  <a href="/login" className="nav-link">
                     LogOut
                   </a>
                 </li>
@@ -158,10 +162,13 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
+  /*
   const { user } = state.auth;
   return {
     user,
   };
+  */
+ return state;
 }
 
 export default connect(mapStateToProps)(App);

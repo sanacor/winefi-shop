@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
-import { isEmail } from "validator";
+import React/*, { Component }*/ from "react";
+//import Form from "react-validation/build/form";
+//import Input from "react-validation/build/input";
+//import CheckButton from "react-validation/build/button";
+//import { isEmail } from "validator";
 
-import { connect } from "react-redux";
-import { register } from "../actions/auth";
-
+//import { connect } from "react-redux";
+//import { register } from "../actions/auth";
+/*
 const required = (value) => {
   if (!value) {
     return (
@@ -198,3 +198,10 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Register);
+*/
+
+function Register(props) {
+  return <h1>hi</h1>;
+}
+
+export default Register;

@@ -1,19 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Redirect } from 'react-router-dom';
-import { useSelector } from "react-redux"
+import { useSelector } from "react-redux";
 
 function Profile(props) {
-  const currentUser = useSelector((state) => {
-    console.log(state);
-    return state.loginSlice.user
-  });
+  //TODO 현재 state를 제대로 가져오지 못하고 있음. createSlice를 하는 경우에 Immer가 동작하지 않는지 확인 필요.
+  console.log("TEST1");
+  const { isSignedIn, user } = useSelector((state) => state.loginSlice );
+  console.log("TEST2");
 
-  /*
-  if (!currentUser) {
+  useEffect( () =>{
+    console.log("TEST3", isSignedIn);
+    console.log("TEST4", user);
+  },[]);
+
+  if (!user) {
     return <Redirect to="/login" />;
   }
-  */
-
+  
+  return (
+    <div className="container">
+      <p>
+          <strong>Token:</strong> {user.access_token.substring(0, 20)} ...{" "}
+          {user.access_token.substr(user.access_token.length - 20)}
+        </p>
+    </div>
+  );
+  /*
   return (
       <div className="container">
         <header className="jumbotron">
@@ -38,6 +50,7 @@ function Profile(props) {
         </ul>
       </div>
     );
+    */
 }
 
 export default Profile;

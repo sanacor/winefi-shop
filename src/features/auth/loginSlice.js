@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit'
 import winefiAPI from '../../utils/winefiAPI'
 
 const name = "auth";
@@ -11,14 +11,15 @@ export const loginTry = createAsyncThunk(
     }
 )
 
+const initialState = {
+    isSignedIn : false,
+    user : null,
+  }
+
 
 const loginSlice = createSlice({
   name: "signin",
-  initialState: {
-    loading : 'idle',
-    isSignedIn : false,
-    user : null,
-  },
+  initialState,
   reducers: {
       /*
     addTodo(state, action) {
@@ -32,18 +33,29 @@ const loginSlice = createSlice({
       }
     }
     */
+   setUserInfo(state, action) {
+    state.isSignedIn = true;
+    state.user = {
+        isSignedIn : true,
+        user : {
+            "test" : "Test"
+        }
+    }
+   }
   },
   extraReducers : {
       [loginTry.pending.type] : (state, action) => {
         //호출전
-        console.log("Before Login Try");
+        console.log("Before Login Try", current(state), action);
       },
       [loginTry.fulfilled.type] : (state, action) => {
         //성공
-        state.isSignedIn = true;
-        console.log("OONI" , action);
-        state.user = JSON.stringify(action.payload);
-        //localStorage.setItem("user", JSON.stringify(action.payload));
+        console.log("LOGIN SUCCESS");
+        return {
+            ...state,
+            isSignedIn : true,
+            user : action.payload
+        }
       },
       [loginTry.rejected.type] : (state, action) => {
         console.log("LOGIN FAIL");
@@ -53,6 +65,6 @@ const loginSlice = createSlice({
   }
 })
 
-//export const { addTodo, toggleTodo } = loginSlice.actions
+export const { setUserInfo } = loginSlice.actions
 
 export default loginSlice.reducer
