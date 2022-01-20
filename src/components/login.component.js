@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useRef } from "react";
 import { Redirect } from 'react-router-dom';
 
 import Form from "react-validation/build/form";
@@ -18,137 +18,114 @@ const required = (value) => {
   }
 };
 
-class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.handleLogin = this.handleLogin.bind(this);
-    this.onChangeUsername = this.onChangeUsername.bind(this);
-    this.onChangePassword = this.onChangePassword.bind(this);
+function Login(props) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { isLoggedIn, message } = props;
 
-    this.state = {
-      username: "",
-      password: "",
-      loading: false,
-    };
+  const checkBtn = useRef();
+  const loginForm = useRef();
+
+  const onChangeUsername = e => {
+    setUsername(e.target.value)
+  };
+
+  const onChangePassword = e => {
+    setPassword(e.target.value);
   }
 
-  onChangeUsername(e) {
-    this.setState({
-      username: e.target.value,
-    });
-  }
-
-  onChangePassword(e) {
-    this.setState({
-      password: e.target.value,
-    });
-  }
-
-  handleLogin(e) {
+  const handleLogin = e => {
     e.preventDefault();
 
-    this.setState({
-      loading: true,
-    });
+    setLoading(true);
+    //this.form.validateAll(); 구현필요
 
-    this.form.validateAll();
+    const { dispatch, history } = props;
 
-    const { dispatch, history } = this.props;
-
-    if (this.checkBtn.context._errors.length === 0) {
-      dispatch(login(this.state.username, this.state.password))
+    //if (checkBtn.context._errors.length === 0) {
+      dispatch(login(username, password))
         .then(() => {
           history.push("/profile");
           window.location.reload();
         })
         .catch(() => {
-          this.setState({
-            loading: false
-          });
+          setLoading(false);
         });
-    } else {
-      this.setState({
-        loading: false,
-      });
-    }
+    //}
+    //else {
+    //  setLoading(false);
+    //}
   }
 
-  render() {
-    const { isLoggedIn, message } = this.props;
+  if (isLoggedIn) {
+    return <Redirect to="/profile" />;
+  }
 
-    if (isLoggedIn) {
-      return <Redirect to="/profile" />;
-    }
+  return (
+    <div className="col-md-12">
+      <div className="card card-container">
+        <img
+          src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+          alt="profile-img"
+          className="profile-img-card"
+        />
 
-    return (
-      <div className="col-md-12">
-        <div className="card card-container">
-          <img
-            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-            alt="profile-img"
-            className="profile-img-card"
-          />
-
-          <Form
-            onSubmit={this.handleLogin}
-            ref={(c) => {
-              this.form = c;
-            }}
-          >
-            <div className="form-group">
-              <label htmlFor="username">Username</label>
-              <Input
-                type="text"
-                className="form-control"
-                name="username"
-                value={this.state.username}
-                onChange={this.onChangeUsername}
-                validations={[required]}
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <Input
-                type="password"
-                className="form-control"
-                name="password"
-                value={this.state.password}
-                onChange={this.onChangePassword}
-                validations={[required]}
-              />
-            </div>
-
-            <div className="form-group">
-              <button
-                className="btn btn-primary btn-block"
-                disabled={this.state.loading}
-              >
-                {this.state.loading && (
-                  <span className="spinner-border spinner-border-sm"></span>
-                )}
-                <span>Login</span>
-              </button>
-            </div>
-
-            {message && (
-              <div className="form-group">
-                <div className="alert alert-danger" role="alert">
-                  {message}
-                </div>
-              </div>
-            )}
-            <CheckButton
-              style={{ display: "none" }}
-              ref={(c) => {
-                this.checkBtn = c;
-              }}
+        <Form
+          onSubmit={handleLogin}
+          ref={loginForm}
+        >
+          <div className="form-group">
+            <label htmlFor="username">Username</label>
+            <Input
+              type="text"
+              className="form-control"
+              name="username"
+              value={username}
+              onChange={onChangeUsername}
+              validations={[required]}
             />
-          </Form>
-        </div>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <Input
+              type="password"
+              className="form-control"
+              name="password"
+              value={password}
+              onChange={onChangePassword}
+              validations={[required]}
+            />
+          </div>
+
+          <div className="form-group">
+            <button
+              className="btn btn-primary btn-block"
+              disabled={loading}
+            >
+              {loading && (
+                <span className="spinner-border spinner-border-sm"></span>
+              )}
+              <span>Login</span>
+            </button>
+          </div>
+
+          {message && (
+            <div className="form-group">
+              <div className="alert alert-danger" role="alert">
+                {message}
+              </div>
+            </div>
+          )}
+          <CheckButton
+            style={{ display: "none" }}
+            ref={checkBtn}
+          />
+        </Form>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 function mapStateToProps(state) {
