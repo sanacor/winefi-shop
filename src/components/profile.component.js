@@ -1,17 +1,12 @@
 import React, { useEffect } from "react";
 import { Redirect } from 'react-router-dom';
 import { useSelector } from "react-redux";
+import parseJwt from "../helpers/JWTParser";
 
 function Profile(props) {
-  //TODO 현재 state를 제대로 가져오지 못하고 있음. createSlice를 하는 경우에 Immer가 동작하지 않는지 확인 필요.
-  console.log("TEST1");
-  const { isSignedIn, user } = useSelector((state) => state.loginSlice );
-  console.log("TEST2");
-
-  useEffect( () =>{
-    console.log("TEST3", isSignedIn);
-    console.log("TEST4", user);
-  },[]);
+  const { user } = useSelector((state) => state.loginSlice );
+  const [info1, info2] = parseJwt(user.access_token);
+  console.log(info1, info2);
 
   if (!user) {
     return <Redirect to="/login" />;
@@ -20,8 +15,13 @@ function Profile(props) {
   return (
     <div className="container">
       <p>
-          <strong>Token:</strong> {user.access_token.substring(0, 20)} ...{" "}
-          {user.access_token.substr(user.access_token.length - 20)}
+          <strong>Access Token:</strong> {user.access_token}
+          <br/>
+          {JSON.stringify(info1)}
+          <br/>
+          {JSON.stringify(info2)}
+          <br/>
+          <strong>Refresh Token:</strong> {user.refresh_token} 
         </p>
     </div>
   );

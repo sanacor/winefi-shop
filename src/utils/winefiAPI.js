@@ -7,18 +7,19 @@ class winefiAPI {
     return await axios
       .post(API_URL + "signin/web", { userId, userPassword, fcmToken})
       .then((response) => {
+        /*
         console.log(response);
         console.log("ATATATAT : ", response.data.data.access_token);
         if (response.data.data.access_token) {
           localStorage.setItem("user", JSON.stringify(response.data.data));
         }
-
+        */
         return response.data.data;
       });
   }
 
   signout = () => {
-    localStorage.removeItem("user");
+    //localStorage.removeItem("user");
   }
 
   signup = async (username, email, password)  => {

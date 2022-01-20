@@ -50,7 +50,7 @@ const loginSlice = createSlice({
       },
       [loginTry.fulfilled.type] : (state, action) => {
         //성공
-        console.log("LOGIN SUCCESS");
+        console.log("LOGIN SUCCESS", action.payload);
         return {
             ...state,
             isSignedIn : true,
