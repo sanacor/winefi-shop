@@ -44,7 +44,9 @@ function SignIn(props) {
     console.log(data.get('userId'));
     dispatch(login(data.get('userId'), data.get('userPassword')))
         .then(() => {
+          console.log('=== then')
           history.push("/profile");
+          console.log('=== then2')
           window.location.reload();
         })
         .catch(() => {

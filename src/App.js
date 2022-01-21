@@ -12,6 +12,7 @@ import Home from './containers/Home';
 import NotFound from './containers/NotFound';
 import Profile from './containers/Profile';
 
+import { history } from './helpers/history';
 
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
 
   return (
     <div style={{ padding: '30px' }}>
-    <BrowserRouter>
+    <BrowserRouter history={history}>
       <header>
         <h1>Wine-Fi 가맹점 페이지</h1>
         <Link to="/">
