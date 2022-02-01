@@ -34,15 +34,6 @@ const loginSlice = createSlice({
       }
     }
     */
-   setUserInfo(state, action) {
-    state.isSignedIn = true;
-    state.user = {
-        isSignedIn : true,
-        user : {
-            "test" : "Test"
-        }
-    }
-   },
    setFcmToken(state,action) {
      state.fcmToken = action.payload;
      console.log("In setFcmToken ", action.payload);
