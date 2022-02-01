@@ -2,6 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Router, Switch, Route, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
+//import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
@@ -31,6 +38,44 @@ function App(props) {
     return EventBus.remove("logout");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDLiZs17HJ2eOQWfiiwuyCXIHW3qJTaGb8",
+    authDomain: "winecode-e8f6f.firebaseapp.com",
+    projectId: "winecode-e8f6f",
+    storageBucket: "winecode-e8f6f.appspot.com",
+    messagingSenderId: "441215028866",
+    appId: "1:441215028866:web:2ae7755c70a3abfb60ae9b",
+    measurementId: "G-CB87P1432X"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  //const analytics = getAnalytics(app);
+
+  const messaging = getMessaging();//권한 요청
+
+  //토큰 받아오기
+  getToken(messaging, { vapidKey: 'BPhtEFWY3qL_As0dwKTWaYSFLYUo4kjz8hlCL7DVD9W9Vnl2v9isqD15th9K4cNWudup0WdUtkeJHs_VomR8Iso' }).then((currentToken) => {
+    if (currentToken) {
+      // Send the token to your server and update the UI if necessary
+      // ...
+      console.log("currentToken : ", currentToken);
+    } else {
+      // Show permission request UI
+      console.log('No registration token available. Request permission to generate one.');
+      // ...
+    }
+  }).catch((err) => {
+    console.log('An error occurred while retrieving token. ', err);
+    // ...
+  });
+
+  //포그라운드
+  onMessage(messaging, (payload) => {
+    console.log('Message received. ', payload);
+    // ...
+  });
 
   return (
     <Router history={history}>
