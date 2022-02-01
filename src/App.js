@@ -9,6 +9,9 @@ import { getMessaging, getToken, onMessage } from "firebase/messaging";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
@@ -74,7 +77,15 @@ function App(props) {
   //포그라운드
   onMessage(messaging, (payload) => {
     console.log('Message received. ', payload);
-    // ...
+    toast.info(payload.notification.body , {
+      position: "bottom-right",
+      autoClose: false,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
   });
 
   return (
@@ -145,6 +156,18 @@ function App(props) {
             </div>
           )}
         </nav>
+
+        <div>
+        <ToastContainer
+          position="bottom-right"
+          autoClose={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+        />
+        </div>
 
         <div className="container mt-3">
           <Switch>
