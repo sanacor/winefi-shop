@@ -6,7 +6,7 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginTry} from "../features/auth/loginSlice"
 
 const required = (value) => {
@@ -22,10 +22,10 @@ const required = (value) => {
 function Login(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [fcmToken, setFcmToken] = useState("");
   const [loading, setLoading] = useState(false);
   const { isLoggedIn, message } = props;
   const routerHistory = useHistory();
+  const loginState = useSelector((state) => state.loginSlice);
 
   const checkBtn = useRef();
   const loginForm = useRef();
@@ -44,8 +44,9 @@ function Login(props) {
     e.preventDefault();
 
     setLoading(true);
-    setFcmToken("Test");//TODO FCM 토큰을 받아와야 함
     //this.form.validateAll(); //TODO 구현필요
+
+    const fcmToken = loginState.fcmToken;
 
     dispatch(loginTry({username, password, fcmToken}))
       .then(() => {

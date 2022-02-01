@@ -6,14 +6,15 @@ const name = "auth";
 export const loginTry = createAsyncThunk(
     `${name}/signinAction`, // 액션 이름을 정의해 주도록 합니다.
     async ({username, password, fcmToken}, thunkAPI) => {
-        const response = await winefiAPI.signin(username, password, fcmToken);
-        return response
+      const response = await winefiAPI.signin(username, password, fcmToken);
+      return response
     }
 )
 
 const initialState = {
     isSignedIn : false,
     user : null,
+    fcmToken : "",
   }
 
 
@@ -41,6 +42,10 @@ const loginSlice = createSlice({
             "test" : "Test"
         }
     }
+   },
+   setFcmToken(state,action) {
+     state.fcmToken = action.payload;
+     console.log("In setFcmToken ", action.payload);
    }
   },
   extraReducers : {
@@ -65,6 +70,6 @@ const loginSlice = createSlice({
   }
 })
 
-export const { setUserInfo } = loginSlice.actions
+export const { setUserInfo, setFcmToken } = loginSlice.actions
 
 export default loginSlice.reducer

@@ -12,6 +12,9 @@ import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { useDispatch } from "react-redux";
+import { setFcmToken } from "./features/auth/loginSlice";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
@@ -30,6 +33,7 @@ function App(props) {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
   const { user } = useSelector((state) => state.loginSlice);
+  const dispatch = useDispatch();
 
   useEffect(()=>{
     //무슨코드지??
@@ -64,6 +68,7 @@ function App(props) {
       // Send the token to your server and update the UI if necessary
       // ...
       console.log("currentToken : ", currentToken);
+      dispatch(setFcmToken(currentToken));
     } else {
       // Show permission request UI
       console.log('No registration token available. Request permission to generate one.');
