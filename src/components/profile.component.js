@@ -3,6 +3,8 @@ import { Redirect } from 'react-router-dom';
 import { useSelector } from "react-redux";
 import parseJwt from "../helpers/JWTParser";
 
+import SearchIcon from '@material-ui/icons/Search';
+import EditIcon from '@material-ui/icons/Edit';
 
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal'
@@ -59,7 +61,7 @@ function Profile(props) {
         data={state.data}
         actions={[
           {
-            icon: "search",
+            icon: SearchIcon,
             tooltip: "문의 자세히 보기",
             onClick: (event, rowData) => {
               setSelectedRowNumber(rowData.tableData.id);
@@ -68,7 +70,7 @@ function Profile(props) {
             },
           },
           {
-            icon: "edit",
+            icon: EditIcon,
             tooltip: "답변 하기",
             onClick: (event, rowData) => {
               // Do save operation

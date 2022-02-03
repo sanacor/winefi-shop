@@ -179,7 +179,8 @@ function App(props) {
         />
         </div>
 
-        <div className="container mt-3">
+        {/* <div className="container mt-3"> */}
+        <div>
           <Switch>
             <Route exact path={["/", "/home"]} component={Home} />
             <Route exact path="/login" component={Login} />
