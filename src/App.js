@@ -1,5 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Router, Switch, Route, Link } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Switch, Router, Route, Routes, Link } from "react-router-dom";
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import SignIn from './containers/SignIn';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import { useSelector } from "react-redux";
 
 // Import the functions you need from the SDKs you need
@@ -11,6 +16,8 @@ import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import history from './helpers/history';
+
 
 import { useDispatch } from "react-redux";
 import { setFcmToken } from "./features/auth/loginSlice";
@@ -25,8 +32,6 @@ import Profile from "./components/profile.component";
 import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
-
-import history from './helpers/history';
 import EventBus from "./common/EventBus";
 
 function App(props) {
