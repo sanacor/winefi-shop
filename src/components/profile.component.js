@@ -15,7 +15,10 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
+import winefiAPI from "../utils/winefiAPI";
+import authHeader from "../services/auth-header";
 
+// const API_URL = "https://api.winefi.site/";
 
 function Profile(props) {
   const { user } = useSelector((state) => state.loginSlice );
@@ -36,20 +39,24 @@ function Profile(props) {
 
   const [state, setState] = React.useState({ hits: [] });
   React.useEffect(async () => {
-    const result = await axios.get("http://demo3440516.mockable.io/inquiry");
+    console.log("=========================1");
+    // const result = await axios.get("/api/retail/mylist", {headers: authHeader});
+    const result = await winefiAPI.retailMylist();
+    console.log("=========================2");
+    console.log(result);
     setState(result.data);
   }, []);
 
   async function farBoo() {
     console.log("farBoo 1");
-    const result = await axios.post("http://demo3440516.mockable.io/reply", {
+    const result = await axios.post("/api/retail/reply", {
       replyContent: selectedInquiry.inquiryContents,
     });
 
     console.log("farBoo 2");
     handleClose();
 
-    const result2 = await axios.get("http://demo3440516.mockable.io/inquiry");
+    const result2 = await axios.get("/api/retail/mylist");
     setState(result2.data);
   }
 
