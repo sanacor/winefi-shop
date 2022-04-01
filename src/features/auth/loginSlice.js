@@ -6,7 +6,15 @@ const name = "auth";
 export const loginTry = createAsyncThunk(
     `${name}/signinAction`, // 액션 이름을 정의해 주도록 합니다.
     async ({username, password, fcmToken}, thunkAPI) => {
-      const response = await winefiAPI.signin(username, password, fcmToken);
+      const response = await winefiAPI.signin(username, password, fcmToken).catch(e => {
+        //console.log("TEST");
+        //console.log(e.response.data);
+        throw {
+          message: e.response.data.msg,
+          name:e.name,
+          stack:e.stack
+        };
+      });
       return response
     }
 )
@@ -54,9 +62,10 @@ const loginSlice = createSlice({
         }
       },
       [loginTry.rejected.type] : (state, action) => {
-        console.log("LOGIN FAIL");
-        console.log(action.payload);
-        //실패
+        //console.log("LOGIN FAIL");
+        //console.log(action);
+        //console.log(JSON.stringify(action));
+        throw action.error.message;
       }
   }
 })

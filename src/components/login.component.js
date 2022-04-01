@@ -8,7 +8,8 @@ import CheckButton from "react-validation/build/button";
 import Box from '@mui/material/Box';
 
 import { useDispatch, useSelector } from "react-redux";
-import { loginTry} from "../features/auth/loginSlice"
+import { loginTry} from "../features/auth/loginSlice";
+import { toast } from 'react-toastify';
 
 const required = (value) => {
   if (!value) {
@@ -53,7 +54,16 @@ function Login(props) {
       .then(() => {
         routerHistory.push('/profile');
       })
-      .catch(() => {
+      .catch((e) => {
+        toast.info(e , {
+          position: "bottom-right",
+          autoClose: false,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
         setLoading(false);
       });
   }
