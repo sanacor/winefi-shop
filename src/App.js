@@ -29,13 +29,13 @@ import Login from "./components/login.component";
 import Register from "./components/register.component";
 import Home from "./components/home.component";
 import Profile from "./components/profile.component";
+import ShopInfo from "./components/shop-info.component";
 import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
 import EventBus from "./common/EventBus";
 
 function App(props) {
-  const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
   const { user } = useSelector((state) => state.loginSlice);
   const dispatch = useDispatch();
@@ -45,7 +45,6 @@ function App(props) {
     EventBus.on("logout", () => {
       this.logOut();
     });
-    setShowModeratorBoard(true);
     setShowAdminBoard(true);
     return EventBus.remove("logout");
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -112,13 +111,11 @@ function App(props) {
               </Link>
             </li>
 
-            {showModeratorBoard && (
-              <li className="nav-item">
-                <Link to={"/mod"} className="nav-link">
-                  Moderator Board
-                </Link>
-              </li>
-            )}
+            <li className="nav-item">
+              <Link to={"/shopinfo"} className="nav-link">
+                가맹점정보
+              </Link>
+            </li>
 
             {showAdminBoard && (
               <li className="nav-item">
@@ -187,7 +184,7 @@ function App(props) {
             <Route exact path="/register" component={Register} />
             <Route exact path="/profile" component={Profile} />
             <Route path="/user" component={BoardUser} />
-            <Route path="/mod" component={BoardModerator} />
+            <Route path="/shopinfo" component={ShopInfo} />
             <Route path="/admin" component={BoardAdmin} />
           </Switch>
         </div>
