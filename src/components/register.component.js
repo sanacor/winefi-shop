@@ -10,6 +10,11 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useState} from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
+import winefiAPI from '../utils/winefiAPI';
+import { useHistory } from 'react-router';
+import { toast } from 'react-toastify';
 
 function Copyright(props) {
   return (
@@ -27,15 +32,52 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
+  const [submitted, setSubmitted] = useState(false);
+  const routerHistory = useHistory();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    //const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
-    console.log(data.entries());
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    //console.log(data.entries());
+    const data = {
+      userId : event.target.userId.value,
+      userPassword : event.target.userPassword.value,
+      retpName : event.target.retpName.value,
+      retlName : event.target.retlName.value,
+      retlPhone : event.target.retlPhone.value,
+      retlAddress : event.target.retlAddress.value,
+      retlRegNo : event.target.retlRegNo.value,
+      retlEmail : event.target.retlEmail.value,
+      promoCode : event.target.promoCode.value
+    };
+    console.log(data);
+    setSubmitted(true);
+    var [res, msg] = await winefiAPI.signup(data);
+    console.log(res);
+    if(res) {
+      toast.info("회원가입 성공! 운영자 승인 후 로그인 가능합니다." , {
+        position: "bottom-right",
+        autoClose: false,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+      routerHistory.push('/login');
+    } else {
+      toast.info(msg , {
+        position: "bottom-right",
+        autoClose: false,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+      setSubmitted(false);
+    }
   };
 
   return (
@@ -62,9 +104,9 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="username"
+                  id="userId"
                   label="계정명"
-                  name="username"
+                  name="userId"
                   autoComplete="username"
                 />
               </Grid>
@@ -72,10 +114,10 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  name="password"
+                  name="userPassword"
                   label="비밀번호"
-                  type="password"
-                  id="password"
+                  type="userPassword"
+                  id="userPassword"
                   autoComplete="new-password"
                 />
               </Grid>
@@ -101,36 +143,36 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="retlName"
+                  id="retlPhone"
                   label="가맹점 전화번호"
-                  name="retlName"
+                  name="retlPhone"
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  id="retlName"
+                  id="retlAddress"
                   label="가맹점 주소"
-                  name="retlName"
+                  name="retlAddress"
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  id="regNo"
+                  id="retlRegNo"
                   label="사업자 번호"
-                  name="regNo"
+                  name="retlRegNo"
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  id="email"
+                  id="retlEmail"
                   label="이메일 주소"
-                  name="email"
+                  name="retlEmail"
                   autoComplete="email"
                 />
               </Grid>
@@ -144,14 +186,26 @@ export default function SignUp() {
                 />
               </Grid>
             </Grid>
-            <Button
+            {
+              submitted ? 
+              <Box 
+              mt={2} 
+              sx={{ 
+                display: 'flex',
+                justifyContent: 'center'
+              }}>
+              <CircularProgress />
+              </Box>
+              :
+              <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-            >
+              >
               회원가입 신청
-            </Button>
+              </Button>
+            }
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/login" variant="body2">

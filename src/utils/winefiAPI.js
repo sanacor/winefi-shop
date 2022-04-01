@@ -25,11 +25,14 @@ class winefiAPI {
     //localStorage.removeItem("user");
   }
 
-  signup = async (username, email, password)  => {
-    return axios.post(API_URL + "signup", {
-      username,
-      email,
-      password,
+  signup = async (formData)  => {
+    return await axios.post(API_URL + "signup/web", formData).then(res => {
+      //console.log("회원가입 성공");
+      return [true, "회원가입 성공"];
+    }).catch(err => {
+      console.log("회원가입 실패");
+      console.log(err.response.data.msg);
+      return [false, err.response.data.msg];
     });
   }
 

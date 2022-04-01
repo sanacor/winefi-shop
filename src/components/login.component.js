@@ -5,6 +5,7 @@ import { useHistory } from 'react-router';
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
+import Box from '@mui/material/Box';
 
 import { useDispatch, useSelector } from "react-redux";
 import { loginTry} from "../features/auth/loginSlice"
@@ -98,6 +99,13 @@ function Login(props) {
             />
           </div>
 
+          <Box
+            sx={{
+              display: 'flex',
+              height: 20
+            }}
+          />
+          
           <div className="form-group">
             <button
               className="btn btn-primary btn-block"
